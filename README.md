@@ -1,8 +1,12 @@
 # Lab 8: XORPUF
 
 **By:** Nathaniel Wagner
+
 **Date:** 2026/3/13
+
 **Class:** CSE 369
+
+**Status:** Images need to be inserted and files organized
 
 ## Overview and Operation
 
@@ -184,6 +188,3 @@ The constraints placed on one of the ArbiterPUFs, determining placement of the m
 
 This is how the XOR Arbiter looks in the chip planner. The left and right cell columns represent the two distinct Arbiter PUFs. The top two rows represent the mux chains, and the bottom row represents the arbiters.
 
-## Estimated Time Spent
-
-**26 hours**
