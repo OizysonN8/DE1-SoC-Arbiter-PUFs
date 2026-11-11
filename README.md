@@ -18,7 +18,7 @@ For this specific lab and implementing the PUF on the FPGA board, operation is s
 
 ## Block Diagram
 
-![Block diagram of the XORPUF system, showing PUF_FSM, LFSR, muxChains, Arbiters, MajorityVote, and PixelWriter](block_diagram.jpg)
+![Block diagram of the XORPUF system, showing PUF_FSM, LFSR, muxChains, Arbiters, MajorityVote, and PixelWriter]([block_diagram.jpg](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/system_block_diagram.png))
 
 The timing of the system is coordinated by `PUF_FSM`, which runs a cycle to generate 255 (00000000 is not challenged) Challenge-Response Pairs that are then displayed on the 16x16 LED display.
 
