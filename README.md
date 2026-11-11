@@ -1,12 +1,12 @@
-# Lab 8: XORPUF
+# Lab: XORPUF
 
 **By:** Nathaniel Wagner
 
 **Date:** 2026/3/13
 
-**Class:** CSE 369
+**Last Modified: 2026/11/11
 
-**Status:** Images need to be inserted and files organized
+**Status:** Complete. May be expanded in the future.
 
 ## Overview and Operation
 
@@ -184,11 +184,11 @@ At the mux level, the structure is kept using the SystemVerilog `keep` keyword.
 
 Regulating the Fitter's behaviour was a little more involved. After first compiling the design for the Arbiter PUF, the Chip Designer tool in Quartus was used to see where circuit elements were being placed on the board. The muxes need to be placed precisely in parallel so that the signal in either branch takes a comparable amount of time to propagate. This avoids extreme bias, whereby a PUF will almost always output the same response. The difference in responses should be caused by the manufacturing defects on the board, not a difference in routing. To solve this, several physical constraints were added to the Quartus Prime Settings file (`.qsf`), which determines entity-level assignments.
 
-![Quartus .qsf file showing set_location_assignment constraints for muxChain stages and the Arbiter](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/chip_planner.png?raw=true)
+![Quartus .qsf file showing set_location_assignment constraints for muxChain stages and the Arbiter](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/constraints.png?raw=true)
 
 The constraints placed on one of the ArbiterPUFs, determining placement of the mux chains and the arbiter.
 
-![Chip planner view showing a 6-panel grid of LED cell placements for the XOR Arbiter](placement.jpg)
+![Chip planner view showing a 6-panel grid of LED cell placements for the XOR Arbiter](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/chip_planner.png?raw=true)
 
 This is how the XOR Arbiter looks in the chip planner. The left and right cell columns represent the two distinct Arbiter PUFs. The top two rows represent the mux chains, and the bottom row represents the arbiters.
 
