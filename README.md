@@ -18,7 +18,7 @@ For this specific lab and implementing the PUF on the FPGA board, operation is s
 
 ## Block Diagram
 
-![Block diagram of the XORPUF system, showing PUF_FSM, LFSR, muxChains, Arbiters, MajorityVote, and PixelWriter](block_diagram.jpg)
+![Block diagram of the XORPUF system, showing PUF_FSM, LFSR, muxChains, Arbiters, MajorityVote, and PixelWriter](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/system_block_diagram.png?raw=true)
 
 The timing of the system is coordinated by `PUF_FSM`, which runs a cycle to generate 255 (00000000 is not challenged) Challenge-Response Pairs that are then displayed on the 16x16 LED display.
 
@@ -36,7 +36,7 @@ The timing of the system is coordinated by `PUF_FSM`, which runs a cycle to gene
 
 The Arbiter is a latch that decides which of its two inputs arrived first, then outputs a 1-bit response representing the winner.
 
-![Arbiter simulation waveform showing upper, lower, and q signals](sim1.jpg)
+![Arbiter simulation waveform showing upper, lower, and q signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/arbiter_waveform.png?raw=true)
 
 This simulation shows the latch behaviour of the Arbiter. Fed two inputs, it will output 1 if upper is high, and 0 if lower is high. Once an input signal generates an output, the output does not change, regardless of the other input, until the first input signal returns to low.
 
@@ -44,7 +44,7 @@ This simulation shows the latch behaviour of the Arbiter. Fed two inputs, it wil
 
 Generates a pulse of a single clock period from an input that can be sustained for multiple clock cycles.
 
-![pulseGenerator simulation waveform showing in and out signals](sim2.jpg)
+![pulseGenerator simulation waveform showing in and out signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/pulse_generator_waveform.png?raw=true)
 
 This simulation shows that regardless of the length of time for which the input signal of the `pulseGenerator` is held high, the output will only be held high for one clock signal.
 
@@ -56,7 +56,7 @@ A pair of 2:1 multiplexors, one described as being of a "top" layer and the othe
 
 This module chains together 8 `muxStage`s, taking a single input and outputting two signals. In theory, this should be a "do-nothing machine" since the outputs are simply the inputs.
 
-![muxChain simulation waveform showing challenge, upper, and lower signals](sim3.jpg)
+![muxChain simulation waveform showing challenge, upper, and lower signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/muxChain_waveform.png?raw=true)
 
 This simulation shows the "do-nothing" behaviour of the `muxChain`. Regardless of the challenge given, the outputs, `upper` and `lower`, always match the input, `in`, in theory. This behaviour is what changes in practice.
 
@@ -72,19 +72,19 @@ This simple mid-level module instantiates two `ArbiterPUF`s and a `pulseGenerato
 
 An 8-bit Linear Feedback Shift Register used to generate 255 challenges to feed into the PUFs. (00000000 is not tested since it is a trap state for the LFSR.) In this implementation, it's not necessary for this module to be pseudorandom, since the challenge bit size is small enough that it's possible to test every challenge. However, it's quite common for PUFs to have upwards of 64-bit challenges, which would be achieved by extending the mux chain. For this reason, the LFSR was chosen for its scalability: if the design continues to iterate, it may be the case where the challenge width is extended and a random subset of hundreds of thousands of possible challenges needs to be tested.
 
-![Diagram of the 8-bit LFSR showing flip-flops 1-8 and the XOR feedback taps at flip-flops 4, 5, 6, and 8](LSFR.jpg)
+![Diagram of the 8-bit LFSR showing flip-flops 1-8 and the XOR feedback taps at flip-flops 4, 5, 6, and 8](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/lfsr_block_diagram.png?raw=true)
 
 Diagram of the LFSR showing the result of the 4th, 5th, 6th, and 8th flip-flops being XORed together to produce a feeding bit that allows the LFSR to reach 255 of its 256 possible states.
 
-![LFSR simulation waveform showing random, enable, and clk signals](LFSR_tb.jpg)
+![LFSR simulation waveform showing random, enable, and clk signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/lsfr_waveform.png?raw=true)
 
 This simulation shows the LFSR changing states with the enable signal.
 
-![Circular state diagram of the LFSR cycling through 8 states from 000 to 111](LFSR_fsm.jpg)
+![Console log confirming the LFSR reached 255 states and failed to reach the trap state 00000000](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/lsfr_tb_text_result.png?raw=true)
 
 Since it's difficult to visually confirm that the LFSR is visiting every possible state, the test bench was given the additional functionality of recording each state visited.
 
-![Console log confirming the LFSR reached 255 states and failed to reach the trap state 00000000](sim6.jpg)
+
 
 As shown, out of 256 possible states of the LFSR, the only state not visited is 00000000, which is a trap state for the 8-bit LFSR. Since it was an unnecessary complication to have the LFSR visit the trap state and then find a way to permit it to leave, the 00000000 challenge simply wasn't used in the implementation.
 
@@ -92,7 +92,7 @@ As shown, out of 256 possible states of the LFSR, the only state not visited is 
 
 This module orchestrates challenging the PUF and recording its responses. The FSM runs for a finite amount of time, with transitions governed by the clock and two counters.
 
-![PUF_FSM state diagram showing start, load, pauseOne, pulse, pauseTwo, vote, check, sample, cycle, and finished states](FSM.jpg)
+![PUF_FSM state diagram showing start, load, pauseOne, pulse, pauseTwo, vote, check, sample, cycle, and finished states](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/puf_fsm.png?raw=true)
 
 Its steps:
 
@@ -109,15 +109,19 @@ Its steps:
 
 > \*Since the LFSR doesn't generate 256 bits, this cycle simply means that a challenge gets overwritten. This quirk is left untouched, since the LFSR is treated as an implementation detail rather than an essential design decision.
 
-![PUF_FSM simulation waveform showing advance_lfsr, trigger, count_mv, reset_mv, sample_pw, and done signals](sim4.jpg)
+![PUF_FSM simulation waveform showing advance_lfsr, trigger, count_mv, reset_mv, sample_pw, and done signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/puf_fsm_waveform.png?raw=true)
 
 This simulation shows the cycling of the FSM. The top `advance_lfsr` signal goes high when a new challenge is being loaded during the load state. Seven successive high-low switches for both the `trigger` and `count_mv` signals correspond to the pulse and vote states. After each cycle, `sample_pw` goes high followed quickly by `reset_mv`, corresponding to `PixelWriter` taking the average response from `MajorityVote` before `MajorityVote` resets its counter. Finally, once 256 challenges have been tested, the `done` signal is raised high to signal that the FSM is finished.
 
 ### MajorityVote
 
-`MajorityVote` is a 3-bit counter that counts the responses of `XORPUF`. It outputs the average response across 7 trials, governed by simple Moore machine logic. It counts up from 0 to 7, each value represented by a state. In states 0–3, the output is 0. In states 4–7, the output is 1.
+`MajorityVote` is a 3-bit counter that counts the responses of `XORPUF`. It outputs the average response across 7 trials.
 
-![MajorityVote simulation waveform showing reset, enable, state, and average signals](sim5.jpg)
+![MajorityVote FSM](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/puf_fsm.png?raw=true)
+
+The MajorityVote is governed by simple Moore machine logic. It counts up from 0 to 7, each value represented by a state. In states 0–3, the output is 0. In states 4–7, the output is 1.
+
+![MajorityVote simulation waveform showing reset, enable, state, and average signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/majority_vote_waveform.png?raw=true)
 
 This simulation shows the incrementing of `MajorityVote`. After reset, `response` is held high (a low response doesn't contribute to count). Enable is then toggled on and off to command `MajorityVote` to add the response to its total count, resulting in an increment by 1. The output, `average`, starts low and turns high once count reaches 4, indicating the majority of responses are 1's.
 
@@ -125,11 +129,11 @@ This simulation shows the incrementing of `MajorityVote`. After reset, `response
 
 `PixelWriter` takes the average response generated by `MajorityVote` and writes it to a coordinate of the 16x16 LED display, using the challenge from the LFSR as a coordinate where (x, y) = (challenge[7:4], challenge[3:0]). It writes a 1 to the `GrnPixels` array of the `LEDDriver` module when the response is a 1, and writes to the `RedPixels` array when the response is a 0.
 
-![PixelWriter simulation waveform showing the RedPixels array being written](sim7.jpg)
+![PixelWriter simulation waveform showing the RedPixels array being written](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/pixel_writer_waveform_1.png?raw=true)
 
 Simulation that shows the result in the RedPixels array.
 
-![PixelWriter simulation waveform showing the GrnPixels array being written](sim8.jpg)
+![PixelWriter simulation waveform showing the GrnPixels array being written](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/pixel_writer_waveform_2.png?raw=true)
 
 GrnPixels output shown above.
 
@@ -172,15 +176,15 @@ Beyond the test benches, 16 challenges that tend to produce a lot of varied resp
 
 The Quartus Synthesizer optimizes your circuit and the Fitter places it at a location on the FPGA board that it finds appropriate. For the purposes of a PUF, we want to regulate this behaviour. As mentioned before, the `muxChain` is a "do-nothing" machine — its outputs appear to always be its inputs. To prevent the synthesizer from optimizing away the chain, convenient SystemVerilog structures that beget optimization, such as a for-loop, had to be avoided. This is why each pair of muxes is instantiated by a generate loop.
 
-![SystemVerilog code showing a generate loop instantiating one muxStage per challenge bit](code1.jpg)
+![SystemVerilog code showing a generate loop instantiating one muxStage per challenge bit](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/code_snippet_1.png?raw=true)
 
 At the mux level, the structure is kept using the SystemVerilog `keep` keyword.
 
-![SystemVerilog code showing (* keep *) attribute applied to a_out_int and b_out_int logic declarations](code2.jpg)
+![SystemVerilog code showing (* keep *) attribute applied to a_out_int and b_out_int logic declarations](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/code_snippet_2.png?raw=true)
 
 Regulating the Fitter's behaviour was a little more involved. After first compiling the design for the Arbiter PUF, the Chip Designer tool in Quartus was used to see where circuit elements were being placed on the board. The muxes need to be placed precisely in parallel so that the signal in either branch takes a comparable amount of time to propagate. This avoids extreme bias, whereby a PUF will almost always output the same response. The difference in responses should be caused by the manufacturing defects on the board, not a difference in routing. To solve this, several physical constraints were added to the Quartus Prime Settings file (`.qsf`), which determines entity-level assignments.
 
-![Quartus .qsf file showing set_location_assignment constraints for muxChain stages and the Arbiter](constraints.jpg)
+![Quartus .qsf file showing set_location_assignment constraints for muxChain stages and the Arbiter](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/chip_planner.png?raw=true)
 
 The constraints placed on one of the ArbiterPUFs, determining placement of the mux chains and the arbiter.
 
