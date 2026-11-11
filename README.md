@@ -36,7 +36,7 @@ The timing of the system is coordinated by `PUF_FSM`, which runs a cycle to gene
 
 The Arbiter is a latch that decides which of its two inputs arrived first, then outputs a 1-bit response representing the winner.
 
-![Arbiter simulation waveform showing upper, lower, and q signals](sim1.jpg)
+![Arbiter simulation waveform showing upper, lower, and q signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/arbiter_waveform.png?raw=true)
 
 This simulation shows the latch behaviour of the Arbiter. Fed two inputs, it will output 1 if upper is high, and 0 if lower is high. Once an input signal generates an output, the output does not change, regardless of the other input, until the first input signal returns to low.
 
@@ -44,7 +44,7 @@ This simulation shows the latch behaviour of the Arbiter. Fed two inputs, it wil
 
 Generates a pulse of a single clock period from an input that can be sustained for multiple clock cycles.
 
-![pulseGenerator simulation waveform showing in and out signals](sim2.jpg)
+![pulseGenerator simulation waveform showing in and out signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/pulse_generator_waveform.png?raw=true)
 
 This simulation shows that regardless of the length of time for which the input signal of the `pulseGenerator` is held high, the output will only be held high for one clock signal.
 
@@ -56,7 +56,7 @@ A pair of 2:1 multiplexors, one described as being of a "top" layer and the othe
 
 This module chains together 8 `muxStage`s, taking a single input and outputting two signals. In theory, this should be a "do-nothing machine" since the outputs are simply the inputs.
 
-![muxChain simulation waveform showing challenge, upper, and lower signals](sim3.jpg)
+![muxChain simulation waveform showing challenge, upper, and lower signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/muxChain_waveform.png?raw=true)
 
 This simulation shows the "do-nothing" behaviour of the `muxChain`. Regardless of the challenge given, the outputs, `upper` and `lower`, always match the input, `in`, in theory. This behaviour is what changes in practice.
 
@@ -72,19 +72,19 @@ This simple mid-level module instantiates two `ArbiterPUF`s and a `pulseGenerato
 
 An 8-bit Linear Feedback Shift Register used to generate 255 challenges to feed into the PUFs. (00000000 is not tested since it is a trap state for the LFSR.) In this implementation, it's not necessary for this module to be pseudorandom, since the challenge bit size is small enough that it's possible to test every challenge. However, it's quite common for PUFs to have upwards of 64-bit challenges, which would be achieved by extending the mux chain. For this reason, the LFSR was chosen for its scalability: if the design continues to iterate, it may be the case where the challenge width is extended and a random subset of hundreds of thousands of possible challenges needs to be tested.
 
-![Diagram of the 8-bit LFSR showing flip-flops 1-8 and the XOR feedback taps at flip-flops 4, 5, 6, and 8](LSFR.jpg)
+![Diagram of the 8-bit LFSR showing flip-flops 1-8 and the XOR feedback taps at flip-flops 4, 5, 6, and 8](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/lfsr_block_diagram.png?raw=true)
 
 Diagram of the LFSR showing the result of the 4th, 5th, 6th, and 8th flip-flops being XORed together to produce a feeding bit that allows the LFSR to reach 255 of its 256 possible states.
 
-![LFSR simulation waveform showing random, enable, and clk signals](LFSR_tb.jpg)
+![LFSR simulation waveform showing random, enable, and clk signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/lsfr_waveform.png?raw=true)
 
 This simulation shows the LFSR changing states with the enable signal.
 
-![Circular state diagram of the LFSR cycling through 8 states from 000 to 111](LFSR_fsm.jpg)
+![Console log confirming the LFSR reached 255 states and failed to reach the trap state 00000000](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/lsfr_tb_text_result.png?raw=true)
 
 Since it's difficult to visually confirm that the LFSR is visiting every possible state, the test bench was given the additional functionality of recording each state visited.
 
-![Console log confirming the LFSR reached 255 states and failed to reach the trap state 00000000](sim6.jpg)
+
 
 As shown, out of 256 possible states of the LFSR, the only state not visited is 00000000, which is a trap state for the 8-bit LFSR. Since it was an unnecessary complication to have the LFSR visit the trap state and then find a way to permit it to leave, the 00000000 challenge simply wasn't used in the implementation.
 
@@ -92,7 +92,7 @@ As shown, out of 256 possible states of the LFSR, the only state not visited is 
 
 This module orchestrates challenging the PUF and recording its responses. The FSM runs for a finite amount of time, with transitions governed by the clock and two counters.
 
-![PUF_FSM state diagram showing start, load, pauseOne, pulse, pauseTwo, vote, check, sample, cycle, and finished states](FSM.jpg)
+![PUF_FSM state diagram showing start, load, pauseOne, pulse, pauseTwo, vote, check, sample, cycle, and finished states](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/puf_fsm.png?raw=true)
 
 Its steps:
 
