@@ -115,9 +115,13 @@ This simulation shows the cycling of the FSM. The top `advance_lfsr` signal goes
 
 ### MajorityVote
 
-`MajorityVote` is a 3-bit counter that counts the responses of `XORPUF`. It outputs the average response across 7 trials, governed by simple Moore machine logic. It counts up from 0 to 7, each value represented by a state. In states 0–3, the output is 0. In states 4–7, the output is 1.
+`MajorityVote` is a 3-bit counter that counts the responses of `XORPUF`. It outputs the average response across 7 trials.
 
-![MajorityVote simulation waveform showing reset, enable, state, and average signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/puf_fsm.png?raw=true)
+![MajorityVote FSM](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/puf_fsm.png?raw=true)
+
+The MajorityVote is governed by simple Moore machine logic. It counts up from 0 to 7, each value represented by a state. In states 0–3, the output is 0. In states 4–7, the output is 1.
+
+![MajorityVote simulation waveform showing reset, enable, state, and average signals](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/majority_vote_waveform.png?raw=true)
 
 This simulation shows the incrementing of `MajorityVote`. After reset, `response` is held high (a low response doesn't contribute to count). Enable is then toggled on and off to command `MajorityVote` to add the response to its total count, resulting in an increment by 1. The output, `average`, starts low and turns high once count reaches 4, indicating the majority of responses are 1's.
 
