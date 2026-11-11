@@ -117,7 +117,7 @@ This simulation shows the cycling of the FSM. The top `advance_lfsr` signal goes
 
 `MajorityVote` is a 3-bit counter that counts the responses of `XORPUF`. It outputs the average response across 7 trials.
 
-![MajorityVote FSM](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/puf_fsm.png?raw=true)
+![MajorityVote FSM]([https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/puf_fsm.png?raw=true](https://github.com/OizysonN8/DE1-SoC-Arbiter-PUFs/blob/main/png/report-images/majority_vote_fsm.png)
 
 The MajorityVote is governed by simple Moore machine logic. It counts up from 0 to 7, each value represented by a state. In states 0–3, the output is 0. In states 4–7, the output is 1.
 
